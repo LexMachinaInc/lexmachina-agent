@@ -5,7 +5,7 @@ description = "A2A agent for Lex Machina"
 authors = [{ name = "Gavin Carothers", email = "gavin@lexmachina.com" }]
 readme = "README.md"
 keywords = ['python']
-requires-python = ">=3.9,<4.0"
+requires-python = ">=3.13,<4.0"
 classifiers = [
     "Intended Audience :: Developers",
     "Programming Language :: Python",
@@ -16,6 +16,9 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "a2a-sdk[grpc]>=0.3.8",
 ]
 
 [project.urls]
