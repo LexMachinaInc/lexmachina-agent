@@ -23,17 +23,17 @@ logger = logging.getLogger(__name__)
 
 class ConfigurationError(Exception):
     def __init__(self) -> None:
-        super().__init__("Invalid configuration")
+        self.args = ("Invalid configuration",)
 
 
 class RequiredConfigurationError(ConfigurationError):
     def __init__(self, field_name: str) -> None:
-        super().__init__(f"Missing required configuration value: {field_name}")
+        self.args = (f"Missing required configuration value: {field_name}",)
 
 
 class MissingConfigurationError(ConfigurationError):
     def __init__(self, missing_fields: list[str]) -> None:
-        super().__init__(f"Missing configuration values: {', '.join(missing_fields)}")
+        self.args = (f"Missing configuration values: {', '.join(missing_fields)}",)
 
 
 class APIAgentConfiguration:
