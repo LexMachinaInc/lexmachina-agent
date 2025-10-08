@@ -74,8 +74,26 @@ class APIAgentConfiguration:
                 token=self.token,
             )
         elif self.client_id and self.client_secret:
-            # Implement OAuth2 Client Credentials flow to get a token
-            raise NotImplementedError("OAuth2 Client Credentials flow not implemented yet.")
+            data = {
+                "grant_type": "client_credentials",
+                "client_id": self.client_id,
+                "client_secret": self.client_secret,
+            }
+            token_url = f"{self.api_base_url}/api/token"
+            try:
+                resp = httpx.post(token_url, data=data, headers={"Accept": "application/json"})
+                resp.raise_for_status()
+                access_token = resp.json().get("access_token")
+                if not access_token:
+                    logger.error("Token endpoint did not return access_token.")
+                    raise ConfigurationError()
+                return LexMachinaAPIAgent(
+                    api_base_url=self.api_base_url,
+                    token=typing.cast(str, access_token),
+                )
+            except httpx.HTTPError:
+                logger.exception("OAuth2 token request failed.")
+                raise
         elif self.delegation_url:
             # Implement delegation URL based authentication
             raise NotImplementedError("Delegation URL authentication not implemented yet.")
