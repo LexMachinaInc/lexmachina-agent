@@ -21,6 +21,68 @@ from a2a.utils.errors import ServerError
 logger = logging.getLogger(__name__)
 
 
+class ConfigurationError(Exception):
+    def __init__(self) -> None:
+        super().__init__("Invalid configuration")
+
+
+class RequiredConfigurationError(ConfigurationError):
+    def __init__(self, field_name: str) -> None:
+        super().__init__(f"Missing required configuration value: {field_name}")
+
+
+class MissingConfigurationError(ConfigurationError):
+    def __init__(self, missing_fields: list[str]) -> None:
+        super().__init__(f"Missing configuration values: {', '.join(missing_fields)}")
+
+
+class APIAgentConfiguration:
+    def __init__(self) -> None:
+        # Load configuration from environment variables
+        api_base_url = os.environ.get("API_BASE_URL", "https://law-api-poc.stage.lexmachina.com")
+        token = os.environ.get("API_TOKEN")
+        client_id = os.environ.get("CLIENT_ID")
+        client_secret = os.environ.get("CLIENT_SECRET")
+        delegation_url = os.environ.get("DELEGATION_URL")
+
+        if all(v is None for v in [token, client_id, client_secret, delegation_url]):
+            raise MissingConfigurationError(["API_TOKEN", "CLIENT_ID", "CLIENT_SECRET", "DELEGATION_URL"])
+
+        if token:
+            logger.warning(
+                "Using API_TOKEN for authentication. Consider using CLIENT_ID / CLIENT_SECRET, or DELEGATION_URL for better security."
+            )
+        if client_id is not None and client_secret is None:
+            raise RequiredConfigurationError("CLIENT_SECRET")
+        if client_secret is not None and client_id is None:
+            raise RequiredConfigurationError("CLIENT_ID")
+
+        self.api_base_url = api_base_url
+        self.token = token
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.delegation_url = delegation_url
+
+    @property
+    def is_using_delegation(self) -> bool:
+        return self.delegation_url is not None
+
+    def build_agent(self) -> "LexMachinaAPIAgent":
+        if self.token:
+            return LexMachinaAPIAgent(
+                api_base_url=self.api_base_url,
+                token=self.token,
+            )
+        elif self.client_id and self.client_secret:
+            # Implement OAuth2 Client Credentials flow to get a token
+            raise NotImplementedError("OAuth2 Client Credentials flow not implemented yet.")
+        elif self.delegation_url:
+            # Implement delegation URL based authentication
+            raise NotImplementedError("Delegation URL authentication not implemented yet.")
+        else:
+            raise ConfigurationError()  # This should not happen
+
+
 class LexMachinaAPIAgent:
     """
     A stateful agent that manages communication with the external Lex Machina API.
@@ -94,23 +156,20 @@ class LexMachinaAPIAgent:
 
 
 class LexmachinaAgentExecutor(AgentExecutor):
-    def __init__(self) -> None:
-        token = os.environ["API_TOKEN"]
-        self.api = LexMachinaAPIAgent(
-            api_base_url="https://law-api-poc.stage.lexmachina.com",
-            token=token,
-        )
+    def __init__(self, config: APIAgentConfiguration) -> None:
+        self.config = config
 
     async def execute(
         self,
         context: RequestContext,
         event_queue: EventQueue,
     ) -> None:
+        api = self.config.build_agent()
         if context.task_id is None or context.context_id is None or context.message is None:
             raise ServerError(error=InvalidParamsError(message="Missing task_id or context_id or message"))
         query = context.get_user_input()
 
-        results = await self.api.process_query(query)
+        results = await api.process_query(query)
         parts = [Part(root=TextPart(text=str(results)))]
         await event_queue.enqueue_event(
             completed_task(

@@ -14,7 +14,7 @@ from a2a.types import (
 from dotenv import load_dotenv
 from starlette.applications import Starlette
 
-from .agent_executor import LexmachinaAgentExecutor
+from .agent_executor import APIAgentConfiguration, LexmachinaAgentExecutor
 
 load_dotenv()  # Load environment variables from a .env file if present
 
@@ -41,6 +41,8 @@ def main(host: str, port: int) -> None:
 
 
 def app(base_url: str = "http://localhost:10011/") -> Starlette:
+    """Create the Starlette application with the Lex Machina agent."""
+    config = APIAgentConfiguration()
     capabilities = AgentCapabilities(streaming=False)
     skill = AgentSkill(
         id="search_suggestions",
@@ -65,7 +67,7 @@ def app(base_url: str = "http://localhost:10011/") -> Starlette:
     )
 
     request_handler = DefaultRequestHandler(
-        agent_executor=LexmachinaAgentExecutor(),
+        agent_executor=LexmachinaAgentExecutor(config=config),
         task_store=InMemoryTaskStore(),
     )
 
