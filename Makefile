@@ -20,6 +20,11 @@ test: ## Test the code with pytest
 	@echo "🚀 Testing code: Running pytest"
 	@uv run python -m pytest --cov --cov-config=pyproject.toml --cov-report=xml
 
+.PHONY: run
+run: ## Run the development server
+	@echo "🚀 Starting application"
+	@uv run uvicorn --reload --host localhost --port 10011 --factory lexmachina_agent.server:app
+
 .PHONY: build
 build: clean-build ## Build wheel file
 	@echo "🚀 Creating wheel file"

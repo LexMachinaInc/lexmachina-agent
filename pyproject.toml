@@ -18,12 +18,15 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
-    "a2a-sdk>=0.3.8",
+    "a2a-sdk[http-server]>=0.3.8",
     "click>=8.3.0",
     "dotenv>=0.9.9",
     "httpx>=0.28.1",
     "uvicorn>=0.37.0",
 ]
+
+[project.scripts]
+lexmachina-agent = "lexmachina_agent.server:main"
 
 [project.urls]
 Homepage = "https://gcarothers.github.io/lexmachina-agent/"

@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import os
 import typing
 
@@ -17,6 +18,8 @@ from a2a.utils import (
 )
 from a2a.utils.errors import ServerError
 
+logger = logging.getLogger(__name__)
+
 
 class LexMachinaAPIAgent:
     """
@@ -31,17 +34,17 @@ class LexMachinaAPIAgent:
             "Accept": "application/json",
         }
         self._client = httpx.AsyncClient(base_url=self._api_base_url, headers=self._headers)
-        print("LexMachinaAPIAgent initialized.")
+        logger.info("LexMachinaAPIAgent initialized.")
 
     async def get_suggested_searches(self, query: str) -> dict:
         """Calls the /search/ai_suggested endpoint."""
         try:
-            print(f"Fetching suggested searches for: '{query}'")
+            logger.info(f"Fetching suggested searches for: '{query}'")
             response = await self._client.get("/search/ai_suggested", params={"q": query})
             response.raise_for_status()
             return typing.cast(dict, response.json())
         except httpx.HTTPStatusError as e:
-            print(f"API Error: {e}")
+            logger.exception("API Error")
             return {"error": str(e)}
 
     async def get_search_description(self, description_url: str) -> dict:
@@ -52,19 +55,18 @@ class LexMachinaAPIAgent:
             response.raise_for_status()
             return typing.cast(dict, response.json())
         except httpx.HTTPStatusError as e:
-            print(f"API Error fetching description: {e}")
+            logger.exception("API Error")
             return {"error": str(e)}
 
     async def process_query(self, query: str) -> dict:
         """
         Main method to process a query, fetch suggestions, and enrich them in parallel.
         """
-        print(f"\n--- Processing query: '{query}' ---")
-
         # 1. Get initial suggestions from the API agent
         suggestions_response = await self.get_suggested_searches(query)
 
         if "error" in suggestions_response or not suggestions_response.get("result"):
+            logger.error("Failed to get initial suggestions.")
             return {
                 "error": "Failed to get initial suggestions.",
                 "details": suggestions_response,
@@ -78,7 +80,7 @@ class LexMachinaAPIAgent:
             task = self.get_search_description(suggestion["description_url"])
             enrichment_tasks.append(task)
 
-        print(f"Fetching {len(enrichment_tasks)} descriptions in parallel...")
+        logger.debug(f"Fetching {len(enrichment_tasks)} descriptions in parallel...")
 
         # 3. Execute all enrichment tasks concurrently and gather results
         descriptions = await asyncio.gather(*enrichment_tasks)
@@ -87,7 +89,7 @@ class LexMachinaAPIAgent:
         for suggestion, description_data in zip(suggestions, descriptions):
             suggestion["enriched_description"] = description_data
 
-        print("--- Query processing complete ---")
+        logger.debug("Query processing complete")
         return suggestions_response
 
 
@@ -95,7 +97,7 @@ class LexmachinaAgentExecutor(AgentExecutor):
     def __init__(self) -> None:
         token = os.environ["API_TOKEN"]
         self.api = LexMachinaAPIAgent(
-            api_base_url="https://law-api-poc.stage.lexmachina.com/api/v1/",
+            api_base_url="https://law-api-poc.stage.lexmachina.com",
             token=token,
         )
 
