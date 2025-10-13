@@ -49,16 +49,26 @@ def app(base_url: str = "http://localhost:10011/") -> Starlette:
     skill = AgentSkill(
         id="search_suggestions",
         name="Search Suggestions",
-        description="Provide search suggestions based on user input.",
-        tags=["search", "suggestions", "analytics"],
+        description="""This takes a natural language question or prompt and suggests options for searches.
+          You can ask for assistance in building searches and finding the analytics in Lex Machina you care about.""",
+        tags=["search", "suggestions", "analytics", "legal"],
         examples=[
             "What is the average time to resolution for contracts cases in SDNY in the last 3 months?",
             "Time to trial in a Los Angeles County case before Judge Randy Rhodes?",
             "Reversal rate for employment cases in the 5th circuit?",
+            "Patent cases that went to trial in the last 90 days",
+            "Cases before Judge Schofield that mention tortious interference",
+            "Has Warby Parker been sued in Texas?",
+            "Complaints in Torts cases that mention section 552",
+            "Pleadings that mention jurisprudence",
+            "Jury Verdicts filed in California in the last 5 years",
+            "How long do LA contracts cases before Judge Katherine Chilton take to get to trial?",
+            "What is Judge Lemelle's grant rate for transfer motions?",
+            "Which firms have the most experience arguing employment cases in N.D.Ill?",
         ],
     )
     agent_card = AgentCard(
-        name="Search Suggestions Agent",
+        name="Protégé in Lex Machina Agent",
         description="Provide search suggestions based on user input.",
         url=base_url,
         version="1.0.0",
