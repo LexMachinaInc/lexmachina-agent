@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
-"""Main entry point for the Lex Machina agent."""
+"""Server application for the Lex Machina A2A agent proxy"""
 
 import logging
 
@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 @click.option("--host", "host", default="localhost")
 @click.option("--port", "port", default=10011)
 def main(host: str, port: int) -> None:
-    """Main entry point for the Lex Machina agent."""
+    """Run the Lex Machina agent server"""
     try:
         url = f"http://{host}:{port}/"
         server = app(url)
@@ -43,7 +43,7 @@ def main(host: str, port: int) -> None:
 
 
 def app(base_url: str = "http://localhost:10011/") -> Starlette:
-    """Create the Starlette application with the Lex Machina agent."""
+    """Create the Starlette ASGI application with the Lex Machina agent."""
     config = APIAgentConfiguration()
     capabilities = AgentCapabilities(streaming=False)
     skill = AgentSkill(

@@ -24,21 +24,30 @@ logger = logging.getLogger(__name__)
 
 
 class ConfigurationError(Exception):
+    """Base class for configuration-related errors."""
+
     def __init__(self) -> None:
         self.args = ("Invalid configuration",)
 
 
 class RequiredConfigurationError(ConfigurationError):
+    """Raised when a required configuration field is missing."""
+
     def __init__(self, field_name: str) -> None:
         self.args = (f"Missing required configuration value: {field_name}",)
 
 
 class MissingConfigurationError(ConfigurationError):
+    """Raised when all configuration fields are missing."""
+
     def __init__(self, missing_fields: list[str]) -> None:
         self.args = (f"Missing configuration values: {', '.join(missing_fields)}",)
 
 
 class APIAgentConfiguration:
+    """Configuration for the Lex Machina API Agent.
+    It supports authentication via API token, OAuth2 client credentials, or delegation URL."""
+
     def __init__(self) -> None:
         # Load configuration from environment variables
         api_base_url = os.environ.get("API_BASE_URL", "https://law-api-poc.stage.lexmachina.com")
@@ -70,6 +79,7 @@ class APIAgentConfiguration:
         return self.delegation_url is not None
 
     def build_agent(self) -> "LexMachinaAPIAgent":
+        """Constructs and returns a LexMachinaAPIAgent instance based on the configuration."""
         if self.token:
             return LexMachinaAPIAgent(
                 api_base_url=self.api_base_url,
@@ -105,7 +115,7 @@ class APIAgentConfiguration:
 
 class LexMachinaAPIAgent:
     """
-    A stateful agent that manages communication with the external Lex Machina API.
+    A stateful agent that manages communication with the external Protégé in Lex Machina Agent API.
     It holds the HTTP client and authentication token.
     """
 
@@ -132,7 +142,7 @@ class LexMachinaAPIAgent:
     async def get_search_description(self, description_url: str) -> dict:
         """Fetches the description for a single suggested search."""
         try:
-            print(f"Fetching description from: {description_url}")
+            logger.debug(f"Fetching description from: {description_url}")
             response = await self._client.get(description_url)
             response.raise_for_status()
             return typing.cast(dict, response.json())
@@ -176,6 +186,8 @@ class LexMachinaAPIAgent:
 
 
 class LexmachinaAgentExecutor(AgentExecutor):
+    """AgentExecutor implementation for the Lex Machina agent."""
+
     def __init__(self, config: APIAgentConfiguration) -> None:
         self.config = config
 
@@ -201,4 +213,5 @@ class LexmachinaAgentExecutor(AgentExecutor):
         )
 
     async def cancel(self, request: RequestContext, event_queue: EventQueue) -> None:
+        """Cancellation is not supported."""
         raise ServerError(error=UnsupportedOperationError())

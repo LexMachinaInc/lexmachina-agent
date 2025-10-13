@@ -1,4 +1,4 @@
-site_name: lexmachina-agent
+site_name: Protégé in Lex Machina A2A Proxy
 repo_url: https://github.com/LexMachinaInc/lexmachina-agent
 site_url: https://LexMachinaInc.github.io/lexmachina-agent
 site_description: A2A agent for Lex Machina
@@ -9,7 +9,7 @@ copyright: Copyright © 2025 LexisNexis
 
 nav:
   - Home: index.md
-  - Modules: modules.md
+  - Python Modules (Developer): modules.md
 plugins:
   - search
   - mkdocstrings:
@@ -24,14 +24,14 @@ theme:
     - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: white
-      accent: deep orange
+      accent: red
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: black
-      accent: deep orange
+      accent: red
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
@@ -42,8 +42,6 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/LexMachinaInc/lexmachina-agent
-    - icon: fontawesome/brands/python
-      link: https://pypi.org/project/lexmachina-agent
 
 markdown_extensions:
   - toc:
