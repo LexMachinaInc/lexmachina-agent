@@ -51,4 +51,5 @@ jobs:
             # set latest tag for main branch
             type=raw,value=latest,enable={{is_default_branch}}
             # set SHA-based tag for all events
-            type=sha,prefix={{branch}}-
+            type=sha,prefix={{branch}}-,enable={{branch}}
+            type=sha,prefix=unknown-,enable={{!branch}}
