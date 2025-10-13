@@ -23,3 +23,76 @@ Key functions of this A2A proxy include:
 - **Data Transformation**: It can enrich or reformat data from the Lex Machina API to meet the needs of the requesting agent in a single request.
 
 In essence, this proxy makes it easy to integrate Lex Machina's data and analytics capabilities into a larger ecosystem of AI agents without requiring each agent to have specific knowledge of the Lex Machina API.
+
+## Docker Usage
+
+### Pulling from GitHub Container Registry
+
+Docker images are automatically published to GitHub Container Registry on every release and main branch push:
+
+```bash
+# Pull the latest stable release
+docker pull ghcr.io/lexmachinainc/lexmachina-agent:latest
+
+# Pull a specific version
+docker pull ghcr.io/lexmachinainc/lexmachina-agent:v1.0.0
+
+# Pull the latest development version
+docker pull ghcr.io/lexmachinainc/lexmachina-agent:main
+```
+
+### Running the Container
+
+```bash
+# Basic usage with environment variables
+docker run -d \
+  --name lexmachina-agent \
+  -p 10011:10011 \
+  -e API_TOKEN=your_api_token_here \
+  -e API_BASE_URL=https://law-api-poc.stage.lexmachina.com \
+  ghcr.io/lexmachinainc/lexmachina-agent:latest
+
+# Using OAuth2 client credentials
+docker run -d \
+  --name lexmachina-agent \
+  -p 10011:10011 \
+  -e CLIENT_ID=your_client_id \
+  -e CLIENT_SECRET=your_client_secret \
+  -e API_BASE_URL=https://law-api-poc.stage.lexmachina.com \
+  ghcr.io/lexmachinainc/lexmachina-agent:latest
+
+# Using environment file
+docker run -d \
+  --name lexmachina-agent \
+  -p 10011:10011 \
+  --env-file .env \
+  ghcr.io/lexmachinainc/lexmachina-agent:latest
+```
+
+### Environment Variables
+
+The container accepts the following environment variables:
+
+- `API_TOKEN`: Direct API token for authentication
+- `CLIENT_ID`: OAuth2 client ID (requires CLIENT_SECRET)
+- `CLIENT_SECRET`: OAuth2 client secret (requires CLIENT_ID)
+- `API_BASE_URL`: Base URL for the Lex Machina API (default: `https://law-api-poc.stage.lexmachina.com`)
+- `DELEGATION_URL`: URL for delegation-based authentication (not yet implemented)
+
+### Building Locally
+
+```bash
+# Build the image locally
+docker build -t lexmachina-agent .
+
+# Run your locally built image
+docker run -p 10011:10011 lexmachina-agent
+```
+
+### Health Check
+
+The agent runs on port 10011 and provides an A2A-compliant API. You can check if it's running:
+
+```bash
+curl http://localhost:10011/health
+```
