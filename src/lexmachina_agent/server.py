@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 """Main entry point for the Lex Machina agent."""
 
 import logging
