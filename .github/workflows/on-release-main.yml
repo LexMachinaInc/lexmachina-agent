@@ -4,8 +4,10 @@ on:
   release:
     types: [published]
 
-jobs:
+permissions:
+  contents: write
 
+jobs:
   deploy-docs:
     runs-on: ubuntu-latest
     steps:
