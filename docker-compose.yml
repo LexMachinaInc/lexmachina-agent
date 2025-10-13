@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  lexmachina-agent:
+    build: .
+    ports:
+      - "10011:10011"
+    environment:
+      # Configure your authentication method by setting one of these:
+      # API_TOKEN: "your_api_token_here"
+      # CLIENT_ID: "your_client_id"
+      # CLIENT_SECRET: "your_client_secret"
+      API_BASE_URL: "https://law-api-poc.stage.lexmachina.com"
+    env_file:
+      - .env  # Optional: load environment variables from .env file
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:10011/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
