@@ -40,16 +40,12 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           tags-config: |
-            # set latest tag for main branch
-            type=ref,event=branch
-            # set version tag for releases
-            type=ref,event=tag
-            # set version tag from package version for releases
+            type=schedule
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            # set latest tag for main branch
+            type=ref,event=tag
+            type=ref,event=branch
             type=raw,value=latest,enable={{is_default_branch}}
-            # set SHA-based tag for all events
-            type=sha,prefix={{branch}}-,enable={{branch}}
-            type=sha,prefix=unknown-,enable={{!branch}}
+            type=ref,event=pr
+            type=sha
