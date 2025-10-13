@@ -91,8 +91,8 @@ docker run -p 10011:10011 lexmachina-agent
 
 ### Health Check
 
-The agent runs on port 10011 and provides an A2A-compliant API. You can check if it's running:
+The agent runs on port 10011 and provides an A2A-compliant API. You can check if it's running by accessing the agent card:
 
 ```bash
-curl http://localhost:10011/health
+curl http://localhost:10011/.well-known/agent-card.json
 ```
