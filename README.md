@@ -1,4 +1,4 @@
-# lexmachina-agent
+# Protégé in Lex Machina A2A Proxy
 
 [![Release](https://img.shields.io/github/v/release/LexMachinaInc/lexmachina-agent)](https://img.shields.io/github/v/release/LexMachinaInc/lexmachina-agent)
 [![Build status](https://img.shields.io/github/actions/workflow/status/LexMachinaInc/lexmachina-agent/main.yml?branch=main)](https://github.com/LexMachinaInc/lexmachina-agent/actions/workflows/main.yml?query=branch%3Amain)
@@ -7,62 +7,19 @@
 
 A2A agent for Lex Machina
 
+
+
 - **Github repository**: <https://github.com/LexMachinaInc/lexmachina-agent/>
 - **Documentation** <https://LexMachinaInc.github.io/lexmachina-agent/>
 
-## Getting started with your project
+## What is an A2A Proxy?
 
-### 1. Create a New Repository
+An [Agent-to-Agent (A2A)](https://a2a-protocol.org/latest/) proxy is a specialized service that acts as an intermediary between different AI agents, enabling them to communicate and collaborate effectively. It standardizes the communication protocol, allowing agents with different architectures and capabilities to understand each other.
 
-First, create a repository on GitHub with the same name as this project, and then run the following commands:
+Key functions of this A2A proxy include:
+- **Standardized Interface**: It exposes a consistent API for other agents to interact with, abstracting away the complexities of the underlying Lex Machina services.
+- **Request/Response Handling**: It receives requests from a primary agent, translates them into a format understood by the Lex Machina API, and returns the response in a standardized format.
+- **Authentication and Authorization**: It manages credentials for the Lex Machina API, so the requesting agent doesn't need to handle them directly.
+- **Data Transformation**: It can enrich or reformat data from the Lex Machina API to meet the needs of the requesting agent in a single request.
 
-```bash
-git init -b main
-git add .
-git commit -m "init commit"
-git remote add origin git@github.com:LexMachinaInc/lexmachina-agent.git
-git push -u origin main
-```
-
-### 2. Set Up Your Development Environment
-
-Then, install the environment and the pre-commit hooks with
-
-```bash
-make install
-```
-
-This will also generate your `uv.lock` file
-
-### 3. Run the pre-commit hooks
-
-Initially, the CI/CD pipeline might be failing due to formatting issues. To resolve those run:
-
-```bash
-uv run pre-commit run -a
-```
-
-### 4. Commit the changes
-
-Lastly, commit the changes made by the two steps above to your repository.
-
-```bash
-git add .
-git commit -m 'Fix formatting issues'
-git push origin main
-```
-
-You are now ready to start development on your project!
-The CI/CD pipeline will be triggered when you open a pull request, merge to main, or when you create a new release.
-
-To finalize the set-up for publishing to PyPI, see [here](https://fpgmaas.github.io/cookiecutter-uv/features/publishing/#set-up-for-pypi).
-For activating the automatic documentation with MkDocs, see [here](https://fpgmaas.github.io/cookiecutter-uv/features/mkdocs/#enabling-the-documentation-on-github).
-To enable the code coverage reports, see [here](https://fpgmaas.github.io/cookiecutter-uv/features/codecov/).
-
-## Releasing a new version
-
-
-
----
-
-Repository initiated with [fpgmaas/cookiecutter-uv](https://github.com/fpgmaas/cookiecutter-uv).
+In essence, this proxy makes it easy to integrate Lex Machina's data and analytics capabilities into a larger ecosystem of AI agents without requiring each agent to have specific knowledge of the Lex Machina API.
