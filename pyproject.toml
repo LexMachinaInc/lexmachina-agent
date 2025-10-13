@@ -30,9 +30,9 @@ dependencies = [
 lexmachina-agent = "lexmachina_agent.server:main"
 
 [project.urls]
-Homepage = "https://gcarothers.github.io/lexmachina-agent/"
-Repository = "https://github.com/gcarothers/lexmachina-agent"
-Documentation = "https://gcarothers.github.io/lexmachina-agent/"
+Homepage = "https://LexMachinaInc.github.io/lexmachina-agent/"
+Repository = "https://github.com/LexMachinaInc/lexmachina-agent"
+Documentation = "https://LexMachinaInc.github.io/lexmachina-agent/"
 
 [dependency-groups]
 dev = [

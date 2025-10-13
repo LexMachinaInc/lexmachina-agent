@@ -1,11 +1,11 @@
 site_name: lexmachina-agent
-repo_url: https://github.com/gcarothers/lexmachina-agent
-site_url: https://gcarothers.github.io/lexmachina-agent
+repo_url: https://github.com/LexMachinaInc/lexmachina-agent
+site_url: https://LexMachinaInc.github.io/lexmachina-agent
 site_description: A2A agent for Lex Machina
-site_author: Gavin Carothers
+site_author: Gavin Carothers for LexisNexis
 edit_uri: edit/main/docs/
-repo_name: gcarothers/lexmachina-agent
-copyright: Maintained by <a href="https://gcarothers.com">gcarothers</a>.
+repo_name: LexMachinaInc/lexmachina-agent
+copyright: Copyright © 2025 LexisNexis
 
 nav:
   - Home: index.md
@@ -41,7 +41,7 @@ theme:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/gcarothers/lexmachina-agent
+      link: https://github.com/LexMachinaInc/lexmachina-agent
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/lexmachina-agent
 

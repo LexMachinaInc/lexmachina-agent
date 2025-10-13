@@ -1,15 +1,15 @@
 # lexmachina-agent
 
-[![Release](https://img.shields.io/github/v/release/gcarothers/lexmachina-agent)](https://img.shields.io/github/v/release/gcarothers/lexmachina-agent)
-[![Build status](https://img.shields.io/github/actions/workflow/status/gcarothers/lexmachina-agent/main.yml?branch=main)](https://github.com/gcarothers/lexmachina-agent/actions/workflows/main.yml?query=branch%3Amain)
-[![codecov](https://codecov.io/gh/gcarothers/lexmachina-agent/branch/main/graph/badge.svg)](https://codecov.io/gh/gcarothers/lexmachina-agent)
-[![Commit activity](https://img.shields.io/github/commit-activity/m/gcarothers/lexmachina-agent)](https://img.shields.io/github/commit-activity/m/gcarothers/lexmachina-agent)
-[![License](https://img.shields.io/github/license/gcarothers/lexmachina-agent)](https://img.shields.io/github/license/gcarothers/lexmachina-agent)
+[![Release](https://img.shields.io/github/v/release/LexMachinaInc/lexmachina-agent)](https://img.shields.io/github/v/release/LexMachinaInc/lexmachina-agent)
+[![Build status](https://img.shields.io/github/actions/workflow/status/LexMachinaInc/lexmachina-agent/main.yml?branch=main)](https://github.com/LexMachinaInc/lexmachina-agent/actions/workflows/main.yml?query=branch%3Amain)
+[![codecov](https://codecov.io/gh/LexMachinaInc/lexmachina-agent/branch/main/graph/badge.svg)](https://codecov.io/gh/LexMachinaInc/lexmachina-agent)
+[![Commit activity](https://img.shields.io/github/commit-activity/m/LexMachinaInc/lexmachina-agent)](https://img.shields.io/github/commit-activity/m/LexMachinaInc/lexmachina-agent)
+[![License](https://img.shields.io/github/license/LexMachinaInc/lexmachina-agent)](https://img.shields.io/github/license/LexMachinaInc/lexmachina-agent)
 
 A2A agent for Lex Machina
 
-- **Github repository**: <https://github.com/gcarothers/lexmachina-agent/>
-- **Documentation** <https://gcarothers.github.io/lexmachina-agent/>
+- **Github repository**: <https://github.com/LexMachinaInc/lexmachina-agent/>
+- **Documentation** <https://LexMachinaInc.github.io/lexmachina-agent/>
 
 ## Getting started with your project
 
@@ -21,7 +21,7 @@ First, create a repository on GitHub with the same name as this project, and the
 git init -b main
 git add .
 git commit -m "init commit"
-git remote add origin git@github.com:gcarothers/lexmachina-agent.git
+git remote add origin git@github.com:LexMachinaInc/lexmachina-agent.git
 git push -u origin main
 ```
 
