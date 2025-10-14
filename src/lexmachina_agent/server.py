@@ -68,3 +68,9 @@ def app() -> Starlette:
 
     server = A2AStarletteApplication(agent_card=agent_card, http_handler=request_handler)
     return server.build()
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app(), host="0.0.0.0", port=10011)  # noqa: S104
