@@ -24,6 +24,28 @@ Key functions of this A2A proxy include:
 
 In essence, this proxy makes it easy to integrate Lex Machina's data and analytics capabilities into a larger ecosystem of AI agents without requiring each agent to have specific knowledge of the Lex Machina API.
 
+## Environment Variables
+
+The the application and container accepts the following environment variables:
+
+- `BASE_URL`: URL where this application will be available (default: `http://localhost:10011`)
+- `API_BASE_URL`: Base URL for the Lex Machina API (default: `https://law-api-poc.stage.lexmachina.com`)
+- `CLIENT_ID`: OAuth2 client ID (requires CLIENT_SECRET)
+- `CLIENT_SECRET`: OAuth2 client secret (requires CLIENT_ID)
+- `DELEGATION_URL`: URL for OAuth2 delegation-based authentication (not yet implemented)
+- `API_TOKEN`: Direct API token for authentication (not recommended)
+
+OAuth2 client credentials can be managed using [Lex Machina API Settings](https://law.lexmachina.com/api-settings)
+
+
+## Docker Compose Usage
+
+```bash
+make compose-up
+```
+
+Using either docker or nerdctl will start both lexmachina-agent and a copy of [a2a-inspector](https://github.com/a2aproject/a2a-inspector) for local testing.
+
 ## Docker Usage
 
 ### Pulling from GitHub Container Registry
@@ -35,7 +57,7 @@ Docker images are automatically published to GitHub Container Registry on every 
 docker pull ghcr.io/lexmachinainc/lexmachina-agent:latest
 
 # Pull a specific version
-docker pull ghcr.io/lexmachinainc/lexmachina-agent:v1.0.0
+docker pull ghcr.io/lexmachinainc/lexmachina-agent:0.0.2
 
 # Pull the latest development version
 docker pull ghcr.io/lexmachinainc/lexmachina-agent:main
@@ -44,14 +66,6 @@ docker pull ghcr.io/lexmachinainc/lexmachina-agent:main
 ### Running the Container
 
 ```bash
-# Basic usage with environment variables
-docker run -d \
-  --name lexmachina-agent \
-  -p 10011:10011 \
-  -e API_TOKEN=your_api_token_here \
-  -e API_BASE_URL=https://law-api-poc.stage.lexmachina.com \
-  ghcr.io/lexmachinainc/lexmachina-agent:latest
-
 # Using OAuth2 client credentials
 docker run -d \
   --name lexmachina-agent \
@@ -69,15 +83,6 @@ docker run -d \
   ghcr.io/lexmachinainc/lexmachina-agent:latest
 ```
 
-### Environment Variables
-
-The container accepts the following environment variables:
-
-- `API_TOKEN`: Direct API token for authentication
-- `CLIENT_ID`: OAuth2 client ID (requires CLIENT_SECRET)
-- `CLIENT_SECRET`: OAuth2 client secret (requires CLIENT_ID)
-- `API_BASE_URL`: Base URL for the Lex Machina API (default: `https://law-api-poc.stage.lexmachina.com`)
-- `DELEGATION_URL`: URL for delegation-based authentication (not yet implemented)
 
 ### Building Locally
 
