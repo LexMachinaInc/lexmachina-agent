@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   lexmachina-agent:
     build: .
@@ -11,6 +9,7 @@ services:
       # CLIENT_ID: "your_client_id"
       # CLIENT_SECRET: "your_client_secret"
       API_BASE_URL: "https://law-api-poc.stage.lexmachina.com"
+      BASE_URL: "http://lexmachina-agent:10011"
     env_file:
       - .env  # Optional: load environment variables from .env file
     restart: unless-stopped
@@ -20,3 +19,8 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+  a2a-inspector:
+    build:
+      context: ./vendor/a2a-inspector
+    ports:
+      - "8080:8080"

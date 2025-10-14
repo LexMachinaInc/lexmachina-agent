@@ -19,7 +19,6 @@ classifiers = [
 ]
 dependencies = [
     "a2a-sdk[http-server]>=0.3.8",
-    "click>=8.3.0",
     "dotenv>=0.9.9",
     "httpx>=0.28.1",
     "starlette>=0.48.0",

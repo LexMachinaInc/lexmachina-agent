@@ -48,4 +48,28 @@ help:
 	@uv run python -c "import re; \
 	[[print(f'\033[36m{m[0]:<20}\033[0m {m[1]}') for m in re.findall(r'^([a-zA-Z_-]+):.*?## (.*)$$', open(makefile).read(), re.M)] for makefile in ('$(MAKEFILE_LIST)').strip().split()]"
 
+a2a-inspector-source-url := https://github.com/LexMachinaInc/a2a-inspector/archive/refs/heads/fix-docker.tar.gz
+
+vendor/a2a-inspector: ## Vendor the a2a-inspector code
+	@echo "🚀 Vendoring a2a-inspector code"
+	@mkdir -p vendor/a2a-inspector
+	@curl -L $(a2a-inspector-source-url) | tar -xz -C vendor/a2a-inspector --strip-components=1
+
+.PHONY: compose-up
+compose-up: vendor/a2a-inspector ## Start the application using docker-compose
+	@echo "🚀 Starting application using docker-compose"
+	@if command -v nerdctl >/dev/null 2>&1 && nerdctl compose --help >/dev/null 2>&1; then \
+		echo "Using nerdctl compose"; \
+		nerdctl compose up; \
+	elif command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1; then \
+		echo "Using docker compose"; \
+		docker compose up; \
+	elif command -v docker-compose >/dev/null 2>&1; then \
+		echo "Using docker-compose"; \
+		docker-compose up; \
+	else \
+		echo "❌ Neither nerdctl compose nor docker compose/docker-compose is available."; \
+		exit 1; \
+	fi
+
 .DEFAULT_GOAL := help

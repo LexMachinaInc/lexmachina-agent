@@ -3,8 +3,8 @@
 """Server application for the Lex Machina A2A agent proxy"""
 
 import logging
+import os
 
-import click
 from a2a.server.apps import A2AStarletteApplication
 from a2a.server.request_handlers import DefaultRequestHandler
 from a2a.server.tasks import InMemoryTaskStore
@@ -24,26 +24,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-@click.command()
-@click.option("--host", "host", default="localhost")
-@click.option("--port", "port", default=10011)
-def main(host: str, port: int) -> None:
-    """Run the Lex Machina agent server"""
-    try:
-        url = f"http://{host}:{port}/"
-        server = app(url)
-
-        import uvicorn
-
-        uvicorn.run(server, host=host, port=port)
-
-    except Exception:
-        logger.exception("An error occurred during server startup")
-        exit(1)
-
-
-def app(base_url: str = "http://localhost:10011/") -> Starlette:
+def app() -> Starlette:
     """Create the Starlette ASGI application with the Lex Machina agent."""
+    base_url = os.environ.get("BASE_URL", "http://localhost:10011")
     config = APIAgentConfiguration()
     capabilities = AgentCapabilities(streaming=False)
     skill = AgentSkill(
