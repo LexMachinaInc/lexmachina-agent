@@ -6,4 +6,4 @@ While in active development only the most recent main branch release is supporte
 
 ## Reporting a Vulnerability
 
-Please contact security@lexmachina.com you can expect a response within 72 hours ackwolaging your report. 
+Please contact security@lexmachina.com you can expect a response within 72 hours ackwolaging your report.
