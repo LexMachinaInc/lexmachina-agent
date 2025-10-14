@@ -9,6 +9,7 @@ import httpx
 from a2a.server.agent_execution import AgentExecutor, RequestContext
 from a2a.server.events import EventQueue
 from a2a.types import (
+    DataPart,
     InvalidParamsError,
     Part,
     TextPart,
@@ -202,7 +203,7 @@ class LexmachinaAgentExecutor(AgentExecutor):
         query = context.get_user_input()
 
         results = await api.process_query(query)
-        parts = [Part(root=TextPart(text=str(results)))]
+        parts = [Part(root=TextPart(text=str(results))), Part(root=DataPart(data=results))]
         await event_queue.enqueue_event(
             completed_task(
                 context.task_id,
