@@ -9,7 +9,7 @@ ARG REVISION
 # Add metadata labels
 LABEL org.opencontainers.image.title="Lex Machina Agent"
 LABEL org.opencontainers.image.description="A2A agent for Lex Machina"
-LABEL org.opencontainers.image.vendor="Lex Machina Inc."
+LABEL org.opencontainers.image.vendor="Lex Machina / LexisNexis / RELX"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 LABEL org.opencontainers.image.source="https://github.com/LexMachinaInc/lexmachina-agent"
 LABEL org.opencontainers.image.created="${BUILDTIME}"

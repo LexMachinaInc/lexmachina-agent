@@ -52,6 +52,9 @@ runs:
       with:
         images: ${{ inputs.registry }}/${{ inputs.image-name }}
         tags: ${{ inputs.tags-config }}
+      env:
+        DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
+
 
     - name: Build and push Docker image
       id: build
