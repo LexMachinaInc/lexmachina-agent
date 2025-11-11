@@ -35,17 +35,17 @@ Documentation = "https://LexMachinaInc.github.io/lexmachina-agent/"
 
 [dependency-groups]
 dev = [
-    "pytest>=7.2.0",
-    "pre-commit>=2.20.0",
+    "pytest>=9.0.0",
+    "pre-commit>=4.4.0",
     "tox-uv>=1.11.3",
     "deptry>=0.23.0",
     "mypy>=0.991",
     "pytest-cov>=4.0.0",
-    "ruff>=0.11.5",
+    "ruff>=0.14.4",
     "mkdocs>=1.4.2",
-    "mkdocs-material>=8.5.10",
+    "mkdocs-material>=9.6.23",
     "mkdocstrings[python]>=0.26.1",
-    "pytest-asyncio>=1.2.0",
+    "pytest-asyncio>=1.3.0",
 ]
 
 [build-system]
