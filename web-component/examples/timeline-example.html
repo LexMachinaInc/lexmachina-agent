@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline Chart Example - LexMachina Chart Component</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+        .description {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .chart-wrapper {
+            margin: 30px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .chart-info {
+            background: #E3F2FD;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196F3;
+        }
+        .chart-info h3 {
+            margin-top: 0;
+            color: #1565C0;
+        }
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #1976D2;
+        }
+        .code-block {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <h1>📈 Timeline Chart Example</h1>
+    <p class="description">
+        This example demonstrates the LexMachina Chart web component displaying timeline charts 
+        for temporal legal data. Timeline charts are perfect for showing trends over time, such as 
+        case filings, settlement rates, or judge decision patterns.
+    </p>
+
+    <div class="controls">
+        <h3>Interactive Controls</h3>
+        <button onclick="loadCaseFilings()">Cases Filed</button>
+        <button onclick="loadSettlements()">Settlements</button>
+        <button onclick="loadJudgeDecisions()">Judge Decisions</button>
+        <button onclick="updateChartSize(800, 500)">Large</button>
+        <button onclick="updateChartSize(600, 400)">Medium</button>
+        <button onclick="updateChartSize(400, 300)">Small</button>
+    </div>
+
+    <div class="chart-wrapper">
+        <div class="chart-info">
+            <h3>Monthly Case Filings</h3>
+            <p>
+                This timeline chart shows the number of cases filed each month over the past year. 
+                The area under the line is shaded to emphasize the volume, and hover over the dots 
+                to see specific values.
+            </p>
+        </div>
+
+        <!-- The Web Component -->
+        <lexmachina-chart 
+            id="chart1"
+            type="timeline"
+            title="Cases Filed Over Time"
+            width="800"
+            height="400">
+        </lexmachina-chart>
+    </div>
+
+    <div class="chart-wrapper">
+        <h3>Usage Example</h3>
+        <div class="code-block">
+&lt;!-- Include D3.js --&gt;
+&lt;script src="https://d3js.org/d3.v7.min.js"&gt;&lt;/script&gt;
+
+&lt;!-- Include the component --&gt;
+&lt;script src="../src/lexmachina-chart.js"&gt;&lt;/script&gt;
+
+&lt;!-- Use the component --&gt;
+&lt;lexmachina-chart 
+    type="timeline"
+    title="Cases Filed Over Time"
+    width="800"
+    height="400"&gt;
+&lt;/lexmachina-chart&gt;
+
+&lt;script&gt;
+    const chart = document.querySelector('lexmachina-chart');
+    chart.setData([
+        {
+            date: '2024-01-01',
+            value: 45,
+            label: 'January'
+        },
+        {
+            date: '2024-02-01',
+            value: 52,
+            label: 'February'
+        }
+    ]);
+&lt;/script&gt;
+        </div>
+    </div>
+
+    <!-- Include D3.js from CDN -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
+    <!-- Include the web component -->
+    <script src="../src/lexmachina-chart.js"></script>
+
+    <script>
+        // Helper function to generate dates
+        function getMonthlyDates(startDate, months) {
+            const dates = [];
+            const date = new Date(startDate);
+            for (let i = 0; i < months; i++) {
+                dates.push(new Date(date));
+                date.setMonth(date.getMonth() + 1);
+            }
+            return dates;
+        }
+
+        // Sample data sets
+        const caseFilingsData = [
+            { date: '2024-01-01', value: 45, label: 'January - 45 cases' },
+            { date: '2024-02-01', value: 52, label: 'February - 52 cases' },
+            { date: '2024-03-01', value: 68, label: 'March - 68 cases' },
+            { date: '2024-04-01', value: 71, label: 'April - 71 cases' },
+            { date: '2024-05-01', value: 63, label: 'May - 63 cases' },
+            { date: '2024-06-01', value: 58, label: 'June - 58 cases' },
+            { date: '2024-07-01', value: 55, label: 'July - 55 cases' },
+            { date: '2024-08-01', value: 49, label: 'August - 49 cases' },
+            { date: '2024-09-01', value: 72, label: 'September - 72 cases' },
+            { date: '2024-10-01', value: 78, label: 'October - 78 cases' },
+            { date: '2024-11-01', value: 65, label: 'November - 65 cases' }
+        ];
+
+        const settlementsData = [
+            { date: '2024-01-01', value: 12, label: 'January - 12 settlements' },
+            { date: '2024-02-01', value: 15, label: 'February - 15 settlements' },
+            { date: '2024-03-01', value: 18, label: 'March - 18 settlements' },
+            { date: '2024-04-01', value: 22, label: 'April - 22 settlements' },
+            { date: '2024-05-01', value: 19, label: 'May - 19 settlements' },
+            { date: '2024-06-01', value: 17, label: 'June - 17 settlements' },
+            { date: '2024-07-01', value: 14, label: 'July - 14 settlements' },
+            { date: '2024-08-01', value: 16, label: 'August - 16 settlements' },
+            { date: '2024-09-01', value: 21, label: 'September - 21 settlements' },
+            { date: '2024-10-01', value: 25, label: 'October - 25 settlements' },
+            { date: '2024-11-01', value: 20, label: 'November - 20 settlements' }
+        ];
+
+        const judgeDecisionsData = [
+            { date: '2024-01-01', value: 8, label: 'January - 8 decisions' },
+            { date: '2024-02-01', value: 12, label: 'February - 12 decisions' },
+            { date: '2024-03-01', value: 15, label: 'March - 15 decisions' },
+            { date: '2024-04-01', value: 18, label: 'April - 18 decisions' },
+            { date: '2024-05-01', value: 14, label: 'May - 14 decisions' },
+            { date: '2024-06-01', value: 11, label: 'June - 11 decisions' },
+            { date: '2024-07-01', value: 9, label: 'July - 9 decisions' },
+            { date: '2024-08-01', value: 10, label: 'August - 10 decisions' },
+            { date: '2024-09-01', value: 16, label: 'September - 16 decisions' },
+            { date: '2024-10-01', value: 19, label: 'October - 19 decisions' },
+            { date: '2024-11-01', value: 17, label: 'November - 17 decisions' }
+        ];
+
+        // Get the chart element
+        const chart = document.getElementById('chart1');
+
+        // Load initial data
+        loadCaseFilings();
+
+        // Functions to load different datasets
+        function loadCaseFilings() {
+            chart.setAttribute('title', 'Cases Filed Over Time');
+            chart.setData(caseFilingsData);
+        }
+
+        function loadSettlements() {
+            chart.setAttribute('title', 'Settlements Reached Over Time');
+            chart.setData(settlementsData);
+        }
+
+        function loadJudgeDecisions() {
+            chart.setAttribute('title', 'Judge Decisions Over Time');
+            chart.setData(judgeDecisionsData);
+        }
+
+        function updateChartSize(width, height) {
+            chart.setAttribute('width', width);
+            chart.setAttribute('height', height);
+        }
+    </script>
+</body>
+</html>

@@ -212,3 +212,8 @@ __marimo__/
 
 # Local Vendoring
 vendor/a2a-inspector
+
+# Node.js (for web component development)
+node_modules/
+package-lock.json
+web-component/dist/

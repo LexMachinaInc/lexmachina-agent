@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Component Tests</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .test-pass {
+            background: #c8e6c9;
+            border-left: 4px solid #4caf50;
+        }
+        .test-fail {
+            background: #ffcdd2;
+            border-left: 4px solid #f44336;
+        }
+        .test-running {
+            background: #fff9c4;
+            border-left: 4px solid #ffc107;
+        }
+        h1 { color: #1976D2; }
+        h2 { color: #424242; margin-top: 0; }
+        button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 10px 10px 0;
+        }
+        button:hover {
+            background: #1976D2;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 LexMachina Chart Component Tests</h1>
+    
+    <div class="test-section">
+        <h2>Test Controls</h2>
+        <button onclick="runAllTests()">Run All Tests</button>
+        <button onclick="clearResults()">Clear Results</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Results</h2>
+        <div id="test-results"></div>
+    </div>
+
+    <div class="test-section" id="test-container" style="display: none;">
+        <h2>Test Charts (Hidden)</h2>
+    </div>
+
+    <!-- Include D3.js from CDN -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
+    <!-- Include the web component -->
+    <script src="../src/lexmachina-chart.js"></script>
+
+    <script>
+        const testResults = document.getElementById('test-results');
+        const testContainer = document.getElementById('test-container');
+        let testCount = 0;
+        let passCount = 0;
+        let failCount = 0;
+
+        function logResult(name, passed, message) {
+            testCount++;
+            if (passed) passCount++;
+            else failCount++;
+
+            const result = document.createElement('div');
+            result.className = `test-result ${passed ? 'test-pass' : 'test-fail'}`;
+            result.innerHTML = `
+                <strong>${passed ? '✓' : '✗'} ${name}</strong>
+                ${message ? `<br><small>${message}</small>` : ''}
+            `;
+            testResults.appendChild(result);
+        }
+
+        function clearResults() {
+            testResults.innerHTML = '';
+            testContainer.innerHTML = '<h2>Test Charts (Hidden)</h2>';
+            testCount = 0;
+            passCount = 0;
+            failCount = 0;
+        }
+
+        async function runAllTests() {
+            clearResults();
+
+            const running = document.createElement('div');
+            running.className = 'test-result test-running';
+            running.innerHTML = '<strong>⏳ Running tests...</strong>';
+            testResults.appendChild(running);
+
+            await sleep(100);
+
+            // Basic tests
+            testCustomElementDefined();
+            testElementCreation();
+            testAttributeDefaults();
+            
+            // Box plot tests
+            await testBoxPlotRendering();
+            await testBoxPlotDataUpdate();
+            
+            // Timeline tests
+            await testTimelineRendering();
+            await testTimelineDataUpdate();
+            
+            // Error handling tests
+            testInvalidData();
+            testMissingD3Warning();
+
+            // Size tests
+            testSizeAttributes();
+
+            // Summary
+            testResults.removeChild(running);
+            const summary = document.createElement('div');
+            summary.className = 'test-result ' + (failCount === 0 ? 'test-pass' : 'test-fail');
+            summary.innerHTML = `
+                <strong>Test Summary</strong><br>
+                Total: ${testCount} | Passed: ${passCount} | Failed: ${failCount}
+            `;
+            testResults.appendChild(summary);
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function testCustomElementDefined() {
+            const defined = customElements.get('lexmachina-chart') !== undefined;
+            logResult(
+                'Custom element defined',
+                defined,
+                defined ? 'lexmachina-chart custom element is registered' : 'Custom element not found'
+            );
+        }
+
+        function testElementCreation() {
+            try {
+                const chart = document.createElement('lexmachina-chart');
+                const created = chart instanceof HTMLElement;
+                logResult(
+                    'Element creation',
+                    created,
+                    created ? 'Element created successfully' : 'Failed to create element'
+                );
+            } catch (e) {
+                logResult('Element creation', false, e.message);
+            }
+        }
+
+        function testAttributeDefaults() {
+            const chart = document.createElement('lexmachina-chart');
+            testContainer.appendChild(chart);
+            
+            const hasDefaults = 
+                chart._type === 'boxplot' &&
+                chart._width === 600 &&
+                chart._height === 400;
+            
+            logResult(
+                'Default attributes',
+                hasDefaults,
+                hasDefaults ? 'Default values set correctly' : 'Default values incorrect'
+            );
+            
+            testContainer.removeChild(chart);
+        }
+
+        async function testBoxPlotRendering() {
+            const chart = document.createElement('lexmachina-chart');
+            chart.setAttribute('type', 'boxplot');
+            chart.setAttribute('width', '400');
+            chart.setAttribute('height', '300');
+            
+            const data = [
+                { label: 'Test', min: 10, q1: 25, median: 40, q3: 60, max: 90 }
+            ];
+            
+            testContainer.appendChild(chart);
+            chart.setData(data);
+            
+            await sleep(100);
+            
+            const svg = chart.shadowRoot.querySelector('svg');
+            const hasContent = svg !== null;
+            
+            logResult(
+                'Box plot rendering',
+                hasContent,
+                hasContent ? 'Box plot rendered with SVG' : 'No SVG found'
+            );
+            
+            testContainer.removeChild(chart);
+        }
+
+        async function testBoxPlotDataUpdate() {
+            const chart = document.createElement('lexmachina-chart');
+            chart.setAttribute('type', 'boxplot');
+            
+            const data1 = [
+                { label: 'Test1', min: 10, q1: 25, median: 40, q3: 60, max: 90 }
+            ];
+            const data2 = [
+                { label: 'Test1', min: 10, q1: 25, median: 40, q3: 60, max: 90 },
+                { label: 'Test2', min: 15, q1: 30, median: 45, q3: 65, max: 95 }
+            ];
+            
+            testContainer.appendChild(chart);
+            chart.setData(data1);
+            await sleep(100);
+            
+            const boxes1 = chart.shadowRoot.querySelectorAll('.box').length;
+            
+            chart.setData(data2);
+            await sleep(100);
+            
+            const boxes2 = chart.shadowRoot.querySelectorAll('.box').length;
+            const updated = boxes1 === 1 && boxes2 === 2;
+            
+            logResult(
+                'Box plot data update',
+                updated,
+                updated ? `Boxes updated: ${boxes1} -> ${boxes2}` : 'Data update failed'
+            );
+            
+            testContainer.removeChild(chart);
+        }
+
+        async function testTimelineRendering() {
+            const chart = document.createElement('lexmachina-chart');
+            chart.setAttribute('type', 'timeline');
+            chart.setAttribute('width', '400');
+            chart.setAttribute('height', '300');
+            
+            const data = [
+                { date: '2024-01-01', value: 10, label: 'Test1' },
+                { date: '2024-02-01', value: 20, label: 'Test2' }
+            ];
+            
+            testContainer.appendChild(chart);
+            chart.setData(data);
+            
+            await sleep(100);
+            
+            const svg = chart.shadowRoot.querySelector('svg');
+            const line = chart.shadowRoot.querySelector('.timeline-line');
+            const hasContent = svg !== null && line !== null;
+            
+            logResult(
+                'Timeline rendering',
+                hasContent,
+                hasContent ? 'Timeline rendered with line' : 'Timeline rendering failed'
+            );
+            
+            testContainer.removeChild(chart);
+        }
+
+        async function testTimelineDataUpdate() {
+            const chart = document.createElement('lexmachina-chart');
+            chart.setAttribute('type', 'timeline');
+            
+            const data1 = [
+                { date: '2024-01-01', value: 10 },
+                { date: '2024-02-01', value: 20 }
+            ];
+            const data2 = [
+                { date: '2024-01-01', value: 10 },
+                { date: '2024-02-01', value: 20 },
+                { date: '2024-03-01', value: 30 }
+            ];
+            
+            testContainer.appendChild(chart);
+            chart.setData(data1);
+            await sleep(100);
+            
+            const dots1 = chart.shadowRoot.querySelectorAll('.timeline-dot').length;
+            
+            chart.setData(data2);
+            await sleep(100);
+            
+            const dots2 = chart.shadowRoot.querySelectorAll('.timeline-dot').length;
+            const updated = dots1 === 2 && dots2 === 3;
+            
+            logResult(
+                'Timeline data update',
+                updated,
+                updated ? `Dots updated: ${dots1} -> ${dots2}` : 'Data update failed'
+            );
+            
+            testContainer.removeChild(chart);
+        }
+
+        function testInvalidData() {
+            const chart = document.createElement('lexmachina-chart');
+            chart.setAttribute('type', 'boxplot');
+            chart.setAttribute('data', 'invalid json');
+            
+            testContainer.appendChild(chart);
+            
+            const error = chart.shadowRoot.querySelector('.error-message');
+            const hasError = error !== null && error.textContent.includes('No data');
+            
+            logResult(
+                'Invalid data handling',
+                hasError,
+                hasError ? 'Error message displayed for invalid data' : 'Error handling failed'
+            );
+            
+            testContainer.removeChild(chart);
+        }
+
+        function testMissingD3Warning() {
+            // This test would need to temporarily hide D3, which is complex
+            // For now, we just verify D3 is loaded
+            const d3Loaded = typeof window.d3 !== 'undefined';
+            logResult(
+                'D3.js availability',
+                d3Loaded,
+                d3Loaded ? 'D3.js is loaded and available' : 'D3.js not found'
+            );
+        }
+
+        function testSizeAttributes() {
+            const chart = document.createElement('lexmachina-chart');
+            chart.setAttribute('width', '800');
+            chart.setAttribute('height', '500');
+            
+            testContainer.appendChild(chart);
+            
+            const sizeCorrect = chart._width === 800 && chart._height === 500;
+            
+            logResult(
+                'Size attributes',
+                sizeCorrect,
+                sizeCorrect ? 'Width and height set correctly' : 'Size attributes incorrect'
+            );
+            
+            testContainer.removeChild(chart);
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            setTimeout(runAllTests, 500);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{
+  "name": "@lexmachina/chart-component",
+  "version": "1.0.0",
+  "description": "Standalone web component for displaying box plots and timing line charts with D3.js",
+  "main": "src/lexmachina-chart.js",
+  "module": "src/lexmachina-chart.js",
+  "type": "module",
+  "keywords": [
+    "web-component",
+    "d3",
+    "chart",
+    "visualization",
+    "boxplot",
+    "timeline",
+    "legal-tech",
+    "custom-element"
+  ],
+  "author": "Lex Machina",
+  "license": "Apache-2.0",
+  "peerDependencies": {
+    "d3": "^7.0.0"
+  },
+  "files": [
+    "src/",
+    "dist/",
+    "examples/",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LexMachinaInc/lexmachina-agent"
+  },
+  "bugs": {
+    "url": "https://github.com/LexMachinaInc/lexmachina-agent/issues"
+  },
+  "homepage": "https://github.com/LexMachinaInc/lexmachina-agent/tree/main/web-component"
+}

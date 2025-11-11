@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box Plot Example - LexMachina Chart Component</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+        .description {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .chart-wrapper {
+            margin: 30px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .chart-info {
+            background: #E3F2FD;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196F3;
+        }
+        .chart-info h3 {
+            margin-top: 0;
+            color: #1565C0;
+        }
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #1976D2;
+        }
+        .code-block {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <h1>📊 Box Plot Example</h1>
+    <p class="description">
+        This example demonstrates the LexMachina Chart web component displaying box plots 
+        for legal case duration statistics across different courts. Box plots are ideal 
+        for showing the distribution and variance of time-to-trial or settlement times.
+    </p>
+
+    <div class="controls">
+        <h3>Interactive Controls</h3>
+        <button onclick="loadCaseDurations()">Load Case Durations</button>
+        <button onclick="loadSettlementAmounts()">Load Settlement Amounts</button>
+        <button onclick="loadJudgeExperience()">Load Judge Experience</button>
+        <button onclick="updateChartSize(800, 500)">Large</button>
+        <button onclick="updateChartSize(600, 400)">Medium</button>
+        <button onclick="updateChartSize(400, 300)">Small</button>
+    </div>
+
+    <div class="chart-wrapper">
+        <div class="chart-info">
+            <h3>Case Duration by Court (Days)</h3>
+            <p>
+                This box plot shows the distribution of case durations across three major courts. 
+                Each box represents the interquartile range (IQR) with the median shown in red. 
+                The whiskers extend to the minimum and maximum values.
+            </p>
+        </div>
+
+        <!-- The Web Component -->
+        <lexmachina-chart 
+            id="chart1"
+            type="boxplot"
+            title="Case Duration Distribution by Court"
+            width="800"
+            height="500">
+        </lexmachina-chart>
+    </div>
+
+    <div class="chart-wrapper">
+        <h3>Usage Example</h3>
+        <div class="code-block">
+&lt;!-- Include D3.js --&gt;
+&lt;script src="https://d3js.org/d3.v7.min.js"&gt;&lt;/script&gt;
+
+&lt;!-- Include the component --&gt;
+&lt;script src="../src/lexmachina-chart.js"&gt;&lt;/script&gt;
+
+&lt;!-- Use the component --&gt;
+&lt;lexmachina-chart 
+    type="boxplot"
+    title="Case Duration Distribution"
+    width="800"
+    height="500"&gt;
+&lt;/lexmachina-chart&gt;
+
+&lt;script&gt;
+    const chart = document.querySelector('lexmachina-chart');
+    chart.setData([
+        {
+            label: 'SDNY',
+            min: 30,
+            q1: 120,
+            median: 180,
+            q3: 270,
+            max: 450
+        }
+    ]);
+&lt;/script&gt;
+        </div>
+    </div>
+
+    <!-- Include D3.js from CDN -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
+    <!-- Include the web component -->
+    <script src="../src/lexmachina-chart.js"></script>
+
+    <script>
+        // Sample data sets
+        const caseDurationsData = [
+            {
+                label: 'SDNY',
+                min: 30,
+                q1: 120,
+                median: 180,
+                q3: 270,
+                max: 450
+            },
+            {
+                label: 'NDCA',
+                min: 45,
+                q1: 140,
+                median: 210,
+                q3: 310,
+                max: 500
+            },
+            {
+                label: 'CDCA',
+                min: 60,
+                q1: 150,
+                median: 220,
+                q3: 320,
+                max: 480
+            },
+            {
+                label: 'EDTX',
+                min: 40,
+                q1: 110,
+                median: 165,
+                q3: 245,
+                max: 420
+            },
+            {
+                label: 'DDel',
+                min: 35,
+                q1: 100,
+                median: 155,
+                q3: 230,
+                max: 390
+            }
+        ];
+
+        const settlementAmountsData = [
+            {
+                label: 'Patent',
+                min: 50000,
+                q1: 500000,
+                median: 1500000,
+                q3: 5000000,
+                max: 25000000
+            },
+            {
+                label: 'Employment',
+                min: 10000,
+                q1: 75000,
+                median: 250000,
+                q3: 750000,
+                max: 3000000
+            },
+            {
+                label: 'Contract',
+                min: 25000,
+                q1: 150000,
+                median: 500000,
+                q3: 1500000,
+                max: 8000000
+            },
+            {
+                label: 'Securities',
+                min: 100000,
+                q1: 1000000,
+                median: 3500000,
+                q3: 10000000,
+                max: 50000000
+            }
+        ];
+
+        const judgeExperienceData = [
+            {
+                label: 'Judge A',
+                min: 1,
+                q1: 3,
+                median: 5,
+                q3: 7,
+                max: 12
+            },
+            {
+                label: 'Judge B',
+                min: 2,
+                q1: 5,
+                median: 8,
+                q3: 11,
+                max: 18
+            },
+            {
+                label: 'Judge C',
+                min: 1,
+                q1: 4,
+                median: 6,
+                q3: 9,
+                max: 15
+            },
+            {
+                label: 'Judge D',
+                min: 3,
+                q1: 6,
+                median: 10,
+                q3: 14,
+                max: 22
+            }
+        ];
+
+        // Get the chart element
+        const chart = document.getElementById('chart1');
+
+        // Load initial data
+        loadCaseDurations();
+
+        // Functions to load different datasets
+        function loadCaseDurations() {
+            chart.setAttribute('title', 'Case Duration Distribution by Court');
+            chart.setData(caseDurationsData);
+        }
+
+        function loadSettlementAmounts() {
+            chart.setAttribute('title', 'Settlement Amounts by Case Type ($)');
+            chart.setData(settlementAmountsData);
+        }
+
+        function loadJudgeExperience() {
+            chart.setAttribute('title', 'Years of Experience by Judge');
+            chart.setData(judgeExperienceData);
+        }
+
+        function updateChartSize(width, height) {
+            chart.setAttribute('width', width);
+            chart.setAttribute('height', height);
+        }
+    </script>
+</body>
+</html>

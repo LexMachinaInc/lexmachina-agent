@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Integration Example - LexMachina Chart Component</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+        .description {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .query-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .query-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        .query-input:focus {
+            outline: none;
+            border-color: #2196F3;
+        }
+        button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #1976D2;
+        }
+        button:disabled {
+            background: #bdbdbd;
+            cursor: not-allowed;
+        }
+        .chart-wrapper {
+            margin: 30px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: #666;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+        .tab.active {
+            color: #2196F3;
+            border-bottom-color: #2196F3;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2196F3;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .info-box {
+            background: #E3F2FD;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196F3;
+        }
+        .example-queries {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .example-query {
+            background: #f5f5f5;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            border: 1px solid #e0e0e0;
+        }
+        .example-query:hover {
+            background: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔗 Full Integration Example</h1>
+    <p class="description">
+        This example demonstrates how to integrate the LexMachina Chart web component with the 
+        Lex Machina A2A Agent API. Enter a query to fetch data and visualize it automatically.
+    </p>
+
+    <div class="query-section">
+        <h3>Query Lex Machina Agent</h3>
+        <input 
+            type="text" 
+            id="queryInput" 
+            class="query-input" 
+            placeholder="Enter your query (e.g., 'Time to trial in Los Angeles County')"
+            value="Average time to resolution for contracts cases in SDNY">
+        <button onclick="executeQuery()" id="queryBtn">Execute Query</button>
+        <button onclick="loadMockData()">Load Mock Data</button>
+        
+        <div class="example-queries">
+            <div class="example-query" onclick="setQuery('Average time to resolution for contracts cases in SDNY')">
+                Time to resolution
+            </div>
+            <div class="example-query" onclick="setQuery('Settlement amounts by case type')">
+                Settlement amounts
+            </div>
+            <div class="example-query" onclick="setQuery('Cases filed over the last 12 months')">
+                Cases filed timeline
+            </div>
+            <div class="example-query" onclick="setQuery('Judge decision rates by court')">
+                Judge decisions
+            </div>
+        </div>
+    </div>
+
+    <div class="chart-wrapper">
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('boxplot')">Box Plot View</button>
+            <button class="tab" onclick="switchTab('timeline')">Timeline View</button>
+        </div>
+
+        <div id="boxplot-tab" class="tab-content active">
+            <div class="info-box">
+                <strong>Box Plot View:</strong> Shows statistical distributions with quartiles, 
+                median, and range. Ideal for comparing categories.
+            </div>
+            <lexmachina-chart 
+                id="boxplot-chart"
+                type="boxplot"
+                title="Loading data..."
+                width="800"
+                height="450">
+            </lexmachina-chart>
+        </div>
+
+        <div id="timeline-tab" class="tab-content">
+            <div class="info-box">
+                <strong>Timeline View:</strong> Shows trends over time with a smooth line chart. 
+                Perfect for temporal data analysis.
+            </div>
+            <lexmachina-chart 
+                id="timeline-chart"
+                type="timeline"
+                title="Loading data..."
+                width="800"
+                height="450">
+            </lexmachina-chart>
+        </div>
+    </div>
+
+    <div class="chart-wrapper">
+        <h3>📖 How This Works</h3>
+        <ol>
+            <li><strong>Enter a Query:</strong> Type a natural language query or click an example</li>
+            <li><strong>API Call:</strong> The query is sent to the Lex Machina A2A Agent API</li>
+            <li><strong>Data Transform:</strong> The API response is transformed into chart-compatible format</li>
+            <li><strong>Visualization:</strong> The web component renders the data as a box plot or timeline</li>
+        </ol>
+        
+        <h4>Integration Code:</h4>
+        <pre style="background: #263238; color: #aed581; padding: 15px; border-radius: 4px; overflow-x: auto;">
+<code>// Query the Lex Machina Agent
+async function queryAgent(query) {
+    const response = await fetch('http://localhost:10011/api/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query })
+    });
+    return await response.json();
+}
+
+// Transform and visualize
+const data = await queryAgent('Time to trial in SDNY');
+const chartData = transformData(data);
+document.querySelector('lexmachina-chart').setData(chartData);
+</code></pre>
+    </div>
+
+    <!-- Include D3.js from CDN -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
+    <!-- Include the web component -->
+    <script src="../src/lexmachina-chart.js"></script>
+
+    <script>
+        // Get chart elements
+        const boxplotChart = document.getElementById('boxplot-chart');
+        const timelineChart = document.getElementById('timeline-chart');
+
+        // Mock data for demonstration (since we may not have API access in this example)
+        const mockBoxPlotData = [
+            {
+                label: 'SDNY',
+                min: 30,
+                q1: 120,
+                median: 180,
+                q3: 270,
+                max: 450
+            },
+            {
+                label: 'NDCA',
+                min: 45,
+                q1: 140,
+                median: 210,
+                q3: 310,
+                max: 500
+            },
+            {
+                label: 'CDCA',
+                min: 60,
+                q1: 150,
+                median: 220,
+                q3: 320,
+                max: 480
+            },
+            {
+                label: 'EDTX',
+                min: 40,
+                q1: 110,
+                median: 165,
+                q3: 245,
+                max: 420
+            }
+        ];
+
+        const mockTimelineData = [
+            { date: '2024-01-01', value: 45, label: 'January - 45 cases' },
+            { date: '2024-02-01', value: 52, label: 'February - 52 cases' },
+            { date: '2024-03-01', value: 68, label: 'March - 68 cases' },
+            { date: '2024-04-01', value: 71, label: 'April - 71 cases' },
+            { date: '2024-05-01', value: 63, label: 'May - 63 cases' },
+            { date: '2024-06-01', value: 58, label: 'June - 58 cases' },
+            { date: '2024-07-01', value: 55, label: 'July - 55 cases' },
+            { date: '2024-08-01', value: 49, label: 'August - 49 cases' },
+            { date: '2024-09-01', value: 72, label: 'September - 72 cases' },
+            { date: '2024-10-01', value: 78, label: 'October - 78 cases' },
+            { date: '2024-11-01', value: 65, label: 'November - 65 cases' }
+        ];
+
+        // Load initial mock data
+        loadMockData();
+
+        function setQuery(query) {
+            document.getElementById('queryInput').value = query;
+        }
+
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+
+        function loadMockData() {
+            boxplotChart.setAttribute('title', 'Case Duration by Court (Days)');
+            boxplotChart.setData(mockBoxPlotData);
+
+            timelineChart.setAttribute('title', 'Cases Filed Over Time');
+            timelineChart.setData(mockTimelineData);
+        }
+
+        async function executeQuery() {
+            const query = document.getElementById('queryInput').value;
+            const queryBtn = document.getElementById('queryBtn');
+            
+            if (!query) {
+                alert('Please enter a query');
+                return;
+            }
+
+            // Disable button and show loading
+            queryBtn.disabled = true;
+            queryBtn.textContent = 'Loading...';
+            boxplotChart.setAttribute('title', 'Loading data...');
+            timelineChart.setAttribute('title', 'Loading data...');
+
+            try {
+                // Attempt to query the actual API
+                const response = await fetch('http://localhost:10011/api/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Transform API response to chart format
+                    // This would need to be customized based on actual API response structure
+                    const chartData = transformAPIResponse(data);
+                    
+                    boxplotChart.setAttribute('title', `Results for: ${query}`);
+                    boxplotChart.setData(chartData.boxplot);
+                    
+                    timelineChart.setAttribute('title', `Results for: ${query}`);
+                    timelineChart.setData(chartData.timeline);
+                } else {
+                    throw new Error('API request failed');
+                }
+            } catch (error) {
+                console.warn('API not available, using mock data:', error);
+                // Fall back to mock data if API is not available
+                loadMockData();
+                alert('Note: Using mock data. To use real data, ensure the Lex Machina agent is running at http://localhost:10011');
+            } finally {
+                // Re-enable button
+                queryBtn.disabled = false;
+                queryBtn.textContent = 'Execute Query';
+            }
+        }
+
+        function transformAPIResponse(apiData) {
+            // This function would transform the API response into the format expected by the charts
+            // The actual transformation logic depends on the API response structure
+            
+            // For now, return mock data structure
+            return {
+                boxplot: mockBoxPlotData,
+                timeline: mockTimelineData
+            };
+        }
+
+        // Allow Enter key to execute query
+        document.getElementById('queryInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                executeQuery();
+            }
+        });
+    </script>
+</body>
+</html>
