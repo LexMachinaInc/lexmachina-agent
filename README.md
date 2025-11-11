@@ -5,12 +5,11 @@
 [![Commit activity](https://img.shields.io/github/commit-activity/m/LexMachinaInc/lexmachina-agent)](https://img.shields.io/github/commit-activity/m/LexMachinaInc/lexmachina-agent)
 [![License](https://img.shields.io/github/license/LexMachinaInc/lexmachina-agent)](https://img.shields.io/github/license/LexMachinaInc/lexmachina-agent)
 
-A2A agent for Lex Machina
-
-
+A2A agent for Lex Machina with web visualization components
 
 - **Github repository**: <https://github.com/LexMachinaInc/lexmachina-agent/>
 - **Documentation** <https://LexMachinaInc.github.io/lexmachina-agent/>
+- **Web Component**: [Visualization Component](web-component/README.md) - Framework-agnostic charts for legal data
 
 ## What is an A2A Proxy?
 
@@ -101,3 +100,32 @@ The agent runs on port 10011 and provides an A2A-compliant API. You can check if
 ```bash
 curl http://localhost:10011/.well-known/agent-card.json
 ```
+
+## Web Visualization Component
+
+This repository includes a standalone web component for visualizing legal data from the Lex Machina API. The component supports:
+
+- **Box Plots**: Display statistical distributions (min, Q1, median, Q3, max) for comparing case durations, settlement amounts, etc.
+- **Timeline Charts**: Show temporal trends for cases filed, decisions made, etc.
+- **Framework Agnostic**: Works with React, Angular, Vue, or plain HTML/JavaScript
+- **D3.js Powered**: Professional-grade visualizations
+
+### Quick Example
+
+```html
+<!-- Include D3.js and the component -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="web-component/src/lexmachina-chart.js"></script>
+
+<!-- Use the component -->
+<lexmachina-chart type="boxplot" title="Case Duration by Court"></lexmachina-chart>
+
+<script>
+    const chart = document.querySelector('lexmachina-chart');
+    chart.setData([
+        { label: 'SDNY', min: 30, q1: 120, median: 180, q3: 270, max: 450 }
+    ]);
+</script>
+```
+
+For complete documentation, see [web-component/README.md](web-component/README.md).

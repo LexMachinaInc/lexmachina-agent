@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box Plot Demo - No CDN</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+        .chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        .demo-message {
+            background: #E3F2FD;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border-left: 4px solid #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <h1>📊 LexMachina Chart Web Component - Demo</h1>
+    
+    <div class="demo-message">
+        <h3>✨ Standalone Web Component Created!</h3>
+        <p>This repository now includes a framework-agnostic web component for displaying box plots and timeline charts using D3.js.</p>
+        
+        <h4>Features:</h4>
+        <ul>
+            <li><strong>Box Plot Charts</strong>: Display statistical distributions with quartiles, median, and range</li>
+            <li><strong>Timeline Charts</strong>: Show temporal trends with smooth curves and interactive tooltips</li>
+            <li><strong>Framework Agnostic</strong>: Works with React, Angular, Vue, or plain HTML</li>
+            <li><strong>Shadow DOM</strong>: Fully encapsulated styles with no CSS conflicts</li>
+            <li><strong>D3.js Powered</strong>: Professional visualizations using D3.js library</li>
+        </ul>
+
+        <h4>Component Structure:</h4>
+        <ul>
+            <li><code>web-component/src/lexmachina-chart.js</code> - Main component (12KB)</li>
+            <li><code>web-component/examples/</code> - Three working examples</li>
+            <li><code>web-component/tests/</code> - Browser-based test suite</li>
+            <li><code>web-component/README.md</code> - Comprehensive documentation</li>
+        </ul>
+
+        <h4>Usage Example:</h4>
+        <pre style="background: #263238; color: #aed581; padding: 15px; border-radius: 4px; overflow-x: auto; margin: 10px 0;">
+&lt;!-- Include D3.js --&gt;
+&lt;script src="https://d3js.org/d3.v7.min.js"&gt;&lt;/script&gt;
+
+&lt;!-- Include the component --&gt;
+&lt;script src="web-component/src/lexmachina-chart.js"&gt;&lt;/script&gt;
+
+&lt;!-- Use the component --&gt;
+&lt;lexmachina-chart 
+    type="boxplot"
+    title="Case Duration by Court"
+    width="800"
+    height="500"&gt;
+&lt;/lexmachina-chart&gt;
+
+&lt;script&gt;
+    // Set data programmatically
+    const chart = document.querySelector('lexmachina-chart');
+    chart.setData([
+        {
+            label: 'SDNY',
+            min: 30,
+            q1: 120,
+            median: 180,
+            q3: 270,
+            max: 450
+        }
+    ]);
+&lt;/script&gt;</pre>
+
+        <h4>Data Formats:</h4>
+        <p><strong>Box Plot:</strong> Requires min, q1, median, q3, max values for each category</p>
+        <p><strong>Timeline:</strong> Requires date and value pairs for temporal data</p>
+
+        <h4>Framework Integration:</h4>
+        <p>The component works seamlessly with React, Angular, Vue, and any other JavaScript framework. See <code>web-component/README.md</code> for detailed integration examples.</p>
+
+        <h4>Files Created:</h4>
+        <ul>
+            <li><code>web-component/src/lexmachina-chart.js</code> - 410 lines</li>
+            <li><code>web-component/README.md</code> - Complete documentation</li>
+            <li><code>web-component/package.json</code> - NPM package configuration</li>
+            <li><code>web-component/examples/boxplot-example.html</code> - Interactive box plot demo</li>
+            <li><code>web-component/examples/timeline-example.html</code> - Interactive timeline demo</li>
+            <li><code>web-component/examples/integration-example.html</code> - Full integration with API</li>
+            <li><code>web-component/tests/test.html</code> - Automated browser tests</li>
+        </ul>
+
+        <h4>Key Features of Implementation:</h4>
+        <ul>
+            <li>✅ Custom Element (Web Components standard)</li>
+            <li>✅ Shadow DOM for style encapsulation</li>
+            <li>✅ Observed attributes for reactivity</li>
+            <li>✅ Public JavaScript API via <code>setData()</code> method</li>
+            <li>✅ D3.js integration for professional charts</li>
+            <li>✅ Responsive design with configurable dimensions</li>
+            <li>✅ Error handling and validation</li>
+            <li>✅ Comprehensive documentation with examples</li>
+            <li>✅ Browser-based test suite</li>
+        </ul>
+
+        <h4>To Use the Component:</h4>
+        <ol>
+            <li>Open any example file in <code>web-component/examples/</code> in a web browser</li>
+            <li>The component requires D3.js to be loaded (via CDN or locally)</li>
+            <li>Import the component script: <code>&lt;script src="path/to/lexmachina-chart.js"&gt;&lt;/script&gt;</code></li>
+            <li>Use the <code>&lt;lexmachina-chart&gt;</code> custom element in your HTML</li>
+            <li>Set data via attributes or JavaScript API</li>
+        </ol>
+
+        <h4>Next Steps (Optional):</h4>
+        <ul>
+            <li>Add build/minification with Rollup or Webpack for production</li>
+            <li>Create more chart types (scatter plots, histograms, etc.)</li>
+            <li>Add animation and transitions</li>
+            <li>Publish to NPM for easier distribution</li>
+            <li>Add TypeScript definitions</li>
+        </ul>
+    </div>
+
+    <div class="chart-container">
+        <h3>Component Architecture</h3>
+        <svg width="600" height="300" style="border: 1px solid #e0e0e0; border-radius: 4px;">
+            <!-- Component Layer -->
+            <rect x="50" y="20" width="500" height="80" fill="#E3F2FD" stroke="#2196F3" stroke-width="2" rx="4"/>
+            <text x="300" y="50" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1976D2">Custom Element: &lt;lexmachina-chart&gt;</text>
+            <text x="300" y="75" text-anchor="middle" font-family="Arial" font-size="12" fill="#666">Shadow DOM • Web Components API • Attributes &amp; Methods</text>
+
+            <!-- D3.js Layer -->
+            <rect x="50" y="120" width="500" height="60" fill="#FFF3E0" stroke="#FF9800" stroke-width="2" rx="4"/>
+            <text x="300" y="145" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#E65100">D3.js Visualization Engine</text>
+            <text x="300" y="165" text-anchor="middle" font-family="Arial" font-size="12" fill="#666">Scales • Axes • SVG Rendering • Data Binding</text>
+
+            <!-- Data Layer -->
+            <rect x="50" y="200" width="500" height="60" fill="#F1F8E9" stroke="#8BC34A" stroke-width="2" rx="4"/>
+            <text x="300" y="225" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#33691E">Data Layer</text>
+            <text x="300" y="245" text-anchor="middle" font-family="Arial" font-size="12" fill="#666">Box Plot Data • Timeline Data • JSON Input</text>
+
+            <!-- Arrows -->
+            <path d="M 300 100 L 300 120" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+            <path d="M 300 180 L 300 200" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+            <!-- Arrow marker -->
+            <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+                    <polygon points="0 0, 10 3, 0 6" fill="#666"/>
+                </marker>
+            </defs>
+        </svg>
+    </div>
+
+</body>
+</html>
