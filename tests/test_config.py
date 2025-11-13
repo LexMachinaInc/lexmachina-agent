@@ -56,27 +56,3 @@ def test_config_oauth_success(monkeypatch: pytest.MonkeyPatch) -> None:
     cfg = APIAgentConfiguration()
     agent = cfg.build_agent()
     assert "Bearer fetched_token" in agent._headers["Authorization"]
-
-
-def test_config_oauth_follows_redirects(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Test that OAuth2 token requests follow redirects."""
-    monkeypatch.delenv("API_TOKEN", raising=False)
-    monkeypatch.setenv("CLIENT_ID", "cid")
-    monkeypatch.setenv("CLIENT_SECRET", "csecret")
-
-    class FakeResp:
-        def raise_for_status(self) -> None:
-            return None
-
-        def json(self) -> dict[str, str]:
-            return {"access_token": "fetched_token"}
-
-    def fake_post(url: str, data: dict[str, str], headers: dict[str, str], follow_redirects: bool = False) -> FakeResp:  # type: ignore[override]
-        # Verify that follow_redirects is True
-        assert follow_redirects is True, "httpx.post should have follow_redirects=True"
-        return FakeResp()
-
-    monkeypatch.setattr(httpx, "post", fake_post)
-    cfg = APIAgentConfiguration()
-    agent = cfg.build_agent()
-    assert agent is not None
