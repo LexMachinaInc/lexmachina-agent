@@ -94,7 +94,7 @@ class APIAgentConfiguration:
             }
             token_url = f"{self.api_base_url}/api/token"
             try:
-                resp = httpx.post(token_url, data=data, headers={"Accept": "application/json"})
+                resp = httpx.post(token_url, data=data, headers={"Accept": "application/json"}, follow_redirects=True)
                 resp.raise_for_status()
                 access_token = resp.json().get("access_token")
                 if not access_token:
@@ -126,7 +126,7 @@ class LexMachinaAPIAgent:
             "Authorization": f"Bearer {token}",
             "Accept": "application/json",
         }
-        self._client = httpx.AsyncClient(base_url=self._api_base_url, headers=self._headers)
+        self._client = httpx.AsyncClient(base_url=self._api_base_url, headers=self._headers, follow_redirects=True)
         logger.info("LexMachinaAPIAgent initialized.")
 
     async def get_suggested_searches(self, query: str) -> dict:
