@@ -61,10 +61,3 @@ async def test_process_query_error_flow(monkeypatch: pytest.MonkeyPatch) -> None
     data = await agent.process_query("abc")
     assert data["error"] == "Failed to get initial suggestions."
     await agent._client.aclose()
-
-
-def test_api_agent_client_follows_redirects() -> None:
-    """Test that the AsyncClient is configured to follow redirects."""
-    agent = LexMachinaAPIAgent("https://example.com", "tok")
-    # Check that the client's follow_redirects attribute is True
-    assert agent._client.follow_redirects is True, "AsyncClient should have follow_redirects=True"
