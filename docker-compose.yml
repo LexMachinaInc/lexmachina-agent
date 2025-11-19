@@ -13,6 +13,9 @@ services:
     env_file:
       - .env  # Optional: load environment variables from .env file
     restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:10011/.well-known/agent-card.json"]
       interval: 30s
