@@ -47,7 +47,7 @@ def test_config_oauth_success(monkeypatch: pytest.MonkeyPatch) -> None:
         def json(self) -> dict[str, str]:
             return {"access_token": "fetched_token"}
 
-    def fake_post(url: str, data: dict[str, str], headers: dict[str, str]) -> FakeResp:  # type: ignore[override]
+    def fake_post(url: str, data: dict[str, str], headers: dict[str, str], follow_redirects: bool = False) -> FakeResp:  # type: ignore[override]
         assert data["client_id"] == "cid"
         assert data["client_secret"] == "csecret"  # noqa: S105
         return FakeResp()
