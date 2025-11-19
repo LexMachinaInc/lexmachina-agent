@@ -38,4 +38,4 @@ RUN uv sync --frozen
 
 EXPOSE 10011
 
-ENTRYPOINT ["uv", "run", "uvicorn", "--host", "0.0.0.0", "--port", "10011", "--factory", "lexmachina_agent.server:app"]
+ENTRYPOINT ["uv", "run", "--no-sync", "--no-cache", "uvicorn", "--host", "0.0.0.0", "--port", "10011", "--factory", "lexmachina_agent.server:app"]
