@@ -37,6 +37,37 @@ The the application and container accepts the following environment variables:
 
 OAuth2 client credentials can be managed using [Lex Machina API Settings](https://law.lexmachina.com/api-settings)
 
+## Development
+
+This project uses [just](https://github.com/casey/just) as a command runner. Just is a modern alternative to make with a simpler syntax.
+
+### Installing just
+
+```bash
+# On macOS
+brew install just
+
+# On Linux
+curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
+
+# Or see https://github.com/casey/just#installation for more options
+```
+
+### Available Commands
+
+Run `just` or `just --list` to see all available commands:
+
+```bash
+just --list
+```
+
+Common commands:
+- `just install` - Set up development environment
+- `just check` - Run all code quality checks
+- `just test` - Run tests with coverage
+- `just run` - Start development server
+- `just docs` - Build and serve documentation
+
 
 ## Docker Compose Usage
 
