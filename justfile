@@ -52,9 +52,15 @@ help:
 
 # Vendor the a2a-inspector code
 vendor-a2a-inspector:
-    @echo "🚀 Vendoring a2a-inspector code"
-    @mkdir -p vendor/a2a-inspector
-    @curl -L https://github.com/LexMachinaInc/a2a-inspector/archive/refs/heads/fix-docker.tar.gz | tar -xz -C vendor/a2a-inspector --strip-components=1
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [ ! -d "vendor/a2a-inspector" ] || [ -z "$(ls -A vendor/a2a-inspector 2>/dev/null)" ]; then \
+        echo "🚀 Vendoring a2a-inspector code"; \
+        mkdir -p vendor/a2a-inspector; \
+        curl -L https://github.com/LexMachinaInc/a2a-inspector/archive/refs/heads/fix-docker.tar.gz | tar -xz -C vendor/a2a-inspector --strip-components=1; \
+    else \
+        echo "✓ a2a-inspector already vendored"; \
+    fi
 
 # Start the application using docker-compose
 compose-up: vendor-a2a-inspector
