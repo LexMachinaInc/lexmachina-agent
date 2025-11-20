@@ -47,19 +47,19 @@ API_BASE_URL=https://law-api-poc.stage.lexmachina.com
 ### Essential Commands
 ```bash
 # Setup development environment (installs pre-commit hooks)
-make install
+just install
 
 # Run all quality checks (lock file, linting, type checking, dependency analysis)
-make check
+just check
 
 # Start development server with auto-reload
-make run  # Starts on localhost:10011
+just run  # Starts on localhost:10011
 
 # Run tests with coverage
-make test
+just test
 
 # Build documentation
-make docs
+just docs
 ```
 
 ### Code Quality Standards

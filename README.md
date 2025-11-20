@@ -41,7 +41,7 @@ OAuth2 client credentials can be managed using [Lex Machina API Settings](https:
 ## Docker Compose Usage
 
 ```bash
-make compose-up
+just compose-up
 ```
 
 Using either docker or nerdctl will start both lexmachina-agent and a copy of [a2a-inspector](https://github.com/a2aproject/a2a-inspector) for local testing.
