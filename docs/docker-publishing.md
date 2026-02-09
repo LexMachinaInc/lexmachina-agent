@@ -90,7 +90,7 @@ docker run -d \
   --name lexmachina-agent \
   -p 10011:10011 \
   -e API_TOKEN=your_token \
-  -e API_BASE_URL=https://law-api-poc.stage.lexmachina.com \
+  -e API_BASE_URL=https://law.lexmachina.com \
   ghcr.io/lexmachinainc/lexmachina-agent:latest
 ```
 

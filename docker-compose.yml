@@ -8,7 +8,7 @@ services:
       # API_TOKEN: "your_api_token_here"
       # CLIENT_ID: "your_client_id"
       # CLIENT_SECRET: "your_client_secret"
-      API_BASE_URL: "https://law-api-poc.stage.lexmachina.com"
+      API_BASE_URL: "https://law.lexmachina.com"
       BASE_URL: "http://lexmachina-agent:10011"
     env_file:
       - .env  # Optional: load environment variables from .env file

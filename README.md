@@ -29,7 +29,7 @@ In essence, this proxy makes it easy to integrate Lex Machina's data and analyti
 The the application and container accepts the following environment variables:
 
 - `BASE_URL`: URL where this application will be available (default: `http://localhost:10011`)
-- `API_BASE_URL`: Base URL for the Lex Machina API (default: `https://law-api-poc.stage.lexmachina.com`)
+- `API_BASE_URL`: Base URL for the Lex Machina API (default: `https://law.lexmachina.com`)
 - `CLIENT_ID`: OAuth2 client ID (requires CLIENT_SECRET)
 - `CLIENT_SECRET`: OAuth2 client secret (requires CLIENT_ID)
 - `DELEGATION_URL`: URL for OAuth2 delegation-based authentication (not yet implemented)
@@ -103,7 +103,7 @@ docker run -d \
   -p 10011:10011 \
   -e CLIENT_ID=your_client_id \
   -e CLIENT_SECRET=your_client_secret \
-  -e API_BASE_URL=https://law-api-poc.stage.lexmachina.com \
+  -e API_BASE_URL=https://law.lexmachina.com \
   ghcr.io/lexmachinainc/lexmachina-agent:latest
 
 # Using environment file
