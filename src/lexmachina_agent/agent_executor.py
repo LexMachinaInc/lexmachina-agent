@@ -51,7 +51,7 @@ class APIAgentConfiguration:
 
     def __init__(self) -> None:
         # Load configuration from environment variables
-        api_base_url = os.environ.get("API_BASE_URL", "https://law-api-poc.stage.lexmachina.com")
+        api_base_url = os.environ.get("API_BASE_URL", "https://law.lexmachina.com")
         token = os.environ.get("API_TOKEN")
         client_id = os.environ.get("CLIENT_ID")
         client_secret = os.environ.get("CLIENT_SECRET")

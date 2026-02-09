@@ -33,8 +33,8 @@ CLIENT_SECRET=your_client_secret
 # Option 3: Delegation URL (not yet implemented)
 DELEGATION_URL=your_delegation_url
 
-# API base URL (defaults to stage environment)
-API_BASE_URL=https://law-api-poc.stage.lexmachina.com
+# API base URL (defaults to production)
+API_BASE_URL=https://law.lexmachina.com
 ```
 
 ### Configuration Error Handling
